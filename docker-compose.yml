@@ -9,8 +9,8 @@ services:
         ports: 
             - "8080:8080"
         volumes:
-            - "../cesieat-client:/app"
-            - "/app/node_modules" 
+            - ../cesieat-client:/app
+            - /app/node_modules 
         environment:
             - API_URL=http://localhost:3000/
     cesieat-api:
@@ -20,7 +20,8 @@ services:
         ports:
             - "3000:3000"
         volumes:
-            - ../cesieat-api:/data
+            - ../cesieat-api:/app
+            - /app/node_modules 
         depends_on: 
             - mongo
         environment:
