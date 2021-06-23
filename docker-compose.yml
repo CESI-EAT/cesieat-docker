@@ -1,0 +1,69 @@
+version: "3"
+services:
+    cesieat-client:
+        container_name: cesieat-client
+        build:
+            context: ../cesieat-client
+        ports:
+            - "8080:8080"
+        volumes:
+            - ../cesieat-client:/data
+        environment:
+            - API_URL=http://localhost:3000/
+    cesieat-api:
+        container_name: cesieat-api
+        build:
+            context: ../cesieat-api
+        ports:
+            - "3000:3000"
+        volumes:
+            - ../cesieat-api:/data
+        depends_on: 
+            - mongo
+        environment:
+        - DATABASE_URL=mongo:27017
+    mongo:
+        container_name: mongo
+        image: mongo
+        ports: 
+            - "27017:27017"
+        environment:
+            - MONGO_INITDB_ROOT_USERNAME=${MONGO_ROOT_USER}
+            - MONGO_INITDB_ROOT_PASSWORD=${MONGO_ROOT_PASSWORD}
+        volumes:
+            - ./mongo:/data/db
+    mongo-express:
+        image: mongo-express
+        container_name: mongo-express
+        environment:
+            - ME_CONFIG_MONGODB_SERVER=mongo
+            - ME_CONFIG_MONGODB_PORT=27017
+            - ME_CONFIG_MONGODB_ADMINUSERNAME=${MONGO_ROOT_USER}
+            - ME_CONFIG_MONGODB_ADMINPASSWORD=${MONGO_ROOT_PASSWORD}
+        depends_on:
+            - mongo
+        ports:
+            - "8081:8081"
+    sql:
+        image: mysql:5.7
+        container_name: sql
+        environment:
+            MYSQL_ROOT_PASSWORD: root
+            MYSQL_DATABASE: cesieat
+        ports:
+            - "6033:3306"
+        volumes:
+            - ./sql:/var/lib/mysql
+    phpmyadmin:
+        image: phpmyadmin/phpmyadmin
+        container_name: pma
+        links:
+            - sql
+        environment:
+            PMA_HOST: sql
+            PMA_PORT: 3306
+            PMA_ARBITRARY: 1
+        ports:
+            - "8888:8888"
+
+        
