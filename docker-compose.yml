@@ -20,8 +20,8 @@ services:
         ports:
             - "3000:3000"
         volumes:
-            - ../cesieat-api:/app
-            - /app/node_modules 
+            - ../cesieat-api:/api
+            - /api/node_modules 
         depends_on: 
             - mongo
         environment:
