@@ -1,0 +1,26 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: node-client
+  labels:
+    app: node-client
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: node-client
+  template:
+    metadata:
+      labels:
+        app: node-client
+    spec:
+      containers:
+      - name: node-client
+        image: cesieat/node-client
+        ports:
+        - containerPort: 8080
+        - containerPort: 9377
+        env:
+        - name: API_URL 
+          value : http://localhost:31110/
+        

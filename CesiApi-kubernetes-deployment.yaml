@@ -1,0 +1,25 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: node-api
+  labels:
+    app: node-api
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: node-api
+  template:
+    metadata:
+      labels:
+        app: node-api
+    spec:
+      containers:
+      - name: node-api
+        image: cesieat/node-api
+        ports:
+        - containerPort: 3000
+        env:
+        - name: DATABASE_URL
+          value: "localhost:31716"
+        

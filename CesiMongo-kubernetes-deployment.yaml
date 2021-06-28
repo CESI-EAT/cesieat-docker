@@ -1,0 +1,28 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: back-mongo
+  labels:
+    app: back-mongo
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: back-mongo
+  template:
+    metadata:
+      labels:
+        app: back-mongo
+    spec:
+      containers:
+      - name: back-mongo
+        image: mongo
+        ports:
+        - containerPort: 27017
+        volumeMounts:
+        - mountPath: "/data/db"
+          name: mypd
+      volumes:
+        - name: mypd
+          persistentVolumeClaim:
+            claimName: mongo-pvc
